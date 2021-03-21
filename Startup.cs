@@ -60,13 +60,20 @@ namespace Catalog
                 { Title = "Catalog", Version = "v1" });
             });
 
-            services.AddHealthChecks()
+            try
+            {
+                services.AddHealthChecks()
                 .AddMongoDb(
                     mongoDbSettings.ConnectionString,
                     name: "mongodb",
                     timeout: TimeSpan.FromSeconds(3),
                     tags: new[] { "ready" }
                 );
+            }
+            catch (System.Exception e)
+            {
+                Console.WriteLine("Error " + e.Message);
+            }
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -81,9 +88,9 @@ namespace Catalog
                         "/swagger/v1/swagger.json",
                         "Catalog v1")
                 );
+                app.UseHttpsRedirection();
             }
 
-            app.UseHttpsRedirection();
 
             app.UseRouting();
 
