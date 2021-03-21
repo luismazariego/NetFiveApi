@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using Catalog.Controllers;
 using Catalog.Entities;
 
 namespace Catalog.Repositories
 {
-    public class InMemItemsRepository : IITemsRepository
+    public class InMemItemsRepository : IItemsRepository
     {
         private readonly List<Item> _items = new()
         {
@@ -32,31 +34,36 @@ namespace Catalog.Repositories
             }
         };
 
-        public IEnumerable<Item> GetItems()
+        public async Task<IEnumerable<Item>> GetItemsAsync()
         {
-            return _items;
+            return await Task.FromResult(_items);
         }
 
-        public Item GetItem(Guid id)
+        public async Task<Item> GetItemAsync(Guid id)
         {
-            return _items.SingleOrDefault(x => x.Id == id);
+            var item = _items.Where(x => x.Id == id).SingleOrDefault();
+            return await Task.FromResult(item);
         }
 
-        public void CreateItem(Item item)
+        public async Task CreateItemAsync(Item item)
         {
             _items.Add(item);
+            await Task.CompletedTask;
         }
 
-        public void UpdateItem(Item item)
+        public async Task UpdateItemAsync(Item item)
         {
-            var index = _items.FindIndex(existingItem => existingItem.Id == item.Id);
+            var index = _items
+                .FindIndex(existingItem => existingItem.Id == item.Id);
             _items[index] = item;
+            await Task.CompletedTask;
         }
 
-        public void DeleteItem(Guid id)
+        public async Task DeleteItemAsync(Guid id)
         {
             var index = _items.FindIndex(existingItem => existingItem.Id == id);
             _items.RemoveAt(index);
+            await Task.CompletedTask;
         }
     }
 }
