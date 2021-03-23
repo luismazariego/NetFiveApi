@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Catalog.Controllers;
-using Catalog.Entities;
+using Catalog.Api.Controllers;
+using Catalog.Api.Entities;
 
-namespace Catalog.Repositories
+namespace Catalog.Api.Repositories
 {
     public class InMemItemsRepository : IItemsRepository
     {

@@ -4,8 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
-using Catalog.Repositories;
-using Catalog.Settings;
+using Catalog.Api.Repositories;
+using Catalog.Api.Settings;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
@@ -24,7 +24,7 @@ using MongoDB.Driver;
 using System.Net.Mime;
 using Microsoft.AspNetCore.Http;
 
-namespace Catalog
+namespace Catalog.Api
 {
     public class Startup
     {
@@ -108,11 +108,13 @@ namespace Catalog
                         {
                             var result = JsonSerializer.Serialize
                             (
-                                new {
+                                new
+                                {
                                     status = report.Status.ToString(),
                                     checks = report.Entries.Select
                                     (
-                                        entry => new {
+                                        entry => new
+                                        {
                                             name = entry.Key,
                                             status = entry.Value.Status
                                                 .ToString(),
